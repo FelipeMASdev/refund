@@ -5,6 +5,8 @@ const expense = document.getElementById("expense");
 const cateory = document.getElementById("category");
 
 const expenseList = document.querySelector("ul");
+const numberOfExpenses = document.querySelector("aside header p span");
+const totalExpense = document.querySelector("aside header h2");
 
 
 //validating the amount input field 
@@ -78,8 +80,46 @@ function addExpense(newExpense) {
     expenseItem.append(expenseIcon, expenseInfo, expenseAmount, removeIcon);
     expenseList.append(expenseItem);
 
+    //update total expense
+    updateTotal();
+
   }catch(e){
     alert("não foi possível atualizar a lista de despesas");
     console.log(e);
+  }
+}
+
+//function to update the total expense
+function updateTotal() {
+  try{
+    const items = Array.from(expenseList.children);
+
+    numberOfExpenses.textContent = `${items.length} ${
+      items.length > 1 ? "despesas" : "despesa"
+    }`;
+
+    let total = 0;
+
+    items.forEach(element => {
+      const itemAmount = element.querySelector(".expense-amount").textContent;
+      
+      let value = itemAmount.replace(/[^\d,]/g, "").replace(",", ".");
+      value = parseFloat(value);
+      
+      if(isNaN(value)) {
+        return alert(
+          "Não foi possível calcular a despesa total. O valor parece estar em um formato inválido."
+        );
+      };
+
+      total += Number(value);
+    });
+
+    total = formatCurrencyBRL(total).toUpperCase().replace("R$", "");
+    totalExpense.innerHTML = `<small>R$</small>${total}`;
+
+  } catch(e){
+    console.log(e);
+    alert("não foi possível atualizar o total de despesas");
   }
 }
