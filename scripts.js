@@ -80,6 +80,9 @@ function addExpense(newExpense) {
     expenseItem.append(expenseIcon, expenseInfo, expenseAmount, removeIcon);
     expenseList.append(expenseItem);
 
+    //clear form fields
+    formClear();
+
     //update total expense
     updateTotal();
 
@@ -122,4 +125,22 @@ function updateTotal() {
     console.log(e);
     alert("não foi possível atualizar o total de despesas");
   }
+}
+
+//capturing click event on the list items, checking the target was the remove icon and removing the item
+expenseList.addEventListener("click", function(event) {
+  if(event.target.classList.contains("remove-icon")) {
+    const item = event.target.closest(".expense");
+    item.remove();
+  };
+  updateTotal();
+});
+
+//function to clear form fields and set focus on the first input
+function formClear() {
+  expense.value = "";
+  amount.value = "";
+  cateory.value = "";
+
+  expense.focus();
 }
