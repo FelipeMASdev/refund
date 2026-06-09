@@ -34,7 +34,7 @@ export function SignUp() {
 
   const navigate = useNavigate();
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
